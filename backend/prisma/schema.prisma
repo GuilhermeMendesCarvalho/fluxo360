@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id            Int       @id @default(autoincrement())
+  nome          String
+  email         String    @unique
+  senhaHasheada String
+  createdAt     DateTime  @default(now())
+  produtos      Produto[]
+}
+
+model Produto {
+  id        Int               @id @default(autoincrement())
+  nome      String
+  descricao String
+  usuarioId Int
+  usuario   Usuario           @relation(fields: [usuarioId], references: [id])
+  variacoes ProdutoVariacao[]
+}
+
+model ProdutoVariacao {
+  id            Int       @id @default(autoincrement())
+  cor           String
+  armazenamento String
+  sku           String?
+  produtoId     Int
+  produto       Produto   @relation(fields: [produtoId], references: [id])
+  anuncios      Anuncio[]
+}
+
+model Anuncio {
+  id                Int             @id @default(autoincrement())
+  plataforma        String
+  tipoAnuncio       String
+  taxaComissao      Float
+  ativo             Boolean
+  produtoVariacaoId Int
+  produtoVariacao   ProdutoVariacao @relation(fields: [produtoVariacaoId], references: [id])
+  precos            PrecoAnuncio[]
+}
+
+model PrecoAnuncio {
+  id             Int      @id @default(autoincrement())
+  nomeOpcao      String
+  precoVenda     Float
+  imposto        Float
+  custoFrete     Float
+  custoEmbalagem Float
+  margemLucro    Float
+  createdAt      DateTime @default(now())
+  anuncioId      Int
+  anuncio        Anuncio  @relation(fields: [anuncioId], references: [id])
+}
