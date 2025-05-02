@@ -48,11 +48,11 @@ export default function Produto() {
           </button>
 
           <div className="mt-4">
-            <h3 className="font-semibold">Variações:</h3>
+            <h3 className="font-semibold mb-2">Variações:</h3>
             {produto.variacoes.map((variacao) => (
-              <div key={variacao.id} className="ml-4 mt-2">
-                <p>Preço: R$ {variacao.preco}</p>
-                <ul className="list-disc ml-4">
+              <div key={variacao.id} className="border rounded p-3 mb-3 bg-gray-50">
+                <p className="font-medium text-sm mb-1">Preço: R$ {variacao.preco}</p>
+                <ul className="list-disc ml-5 text-sm">
                   {variacao.atributos.map((attr) => (
                     <li key={attr.id}>
                       {attr.nome}: {attr.valor}
