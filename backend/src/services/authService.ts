@@ -3,10 +3,14 @@ import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-export const criarUsuario = async (nome: string, email: string, senha: string) => {
+/**
+ * Cria um novo usuário.
+ * Por padrão, o role será 'usuario', a não ser que você queira permitir o envio como parâmetro.
+ */
+export const criarUsuario = async (nome: string, email: string, senha: string, role: string = 'usuario') => {
   const senhaHasheada = await bcrypt.hash(senha, 10);
   return await prisma.usuario.create({
-    data: { nome, email, senhaHasheada }
+    data: { nome, email, senhaHasheada, role }
   });
 };
 
