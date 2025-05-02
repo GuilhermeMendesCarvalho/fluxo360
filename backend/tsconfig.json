@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
-    "skipLibCheck": true,         // <- ESSENCIAL PRA IGNORAR ERRO DO #private
-    "esModuleInterop": true,
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
-    "resolveJsonModule": true,
-    "outDir": "dist",
+    "esModuleInterop": true,
     "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["./**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src", "types"]
 }

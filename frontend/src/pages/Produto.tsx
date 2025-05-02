@@ -1,48 +1,69 @@
+import { useEffect, useState } from "react";
+import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import api from '../services/api';
-
-type Produto = {
+interface Produto {
   id: number;
   nome: string;
-  preco: number;
-};
+  descricao: string;
+  variacoes: {
+    id: number;
+    preco: number;
+    atributos: {
+      id: number;
+      nome: string;
+      valor: string;
+    }[];
+  }[];
+}
 
 export default function Produto() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function carregarProdutos() {
-      try {
-        const res = await api.get('/produtos');
-        setProdutos(res.data);
-      } catch (err) {
-        console.error('Erro ao carregar produtos:', err);
-      }
-    }
-    carregarProdutos();
+    api.get("/produtos")
+      .then((res) => setProdutos(res.data as Produto[]))
+      .catch((err) => console.error("Erro ao carregar produtos:", err));
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-4">
+    <div className="p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Lista de Produtos</h2>
-        <Link to="/produto/cadastro" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        <h1 className="text-2xl font-bold">Produtos</h1>
+        <button onClick={() => navigate("/produto/cadastro")} className="bg-green-500 text-white px-4 py-2 rounded">
           Novo Produto
-        </Link>
+        </button>
       </div>
-      {produtos.length === 0 ? (
-        <p>Nenhum produto cadastrado.</p>
-      ) : (
-        <ul className="space-y-2">
-          {produtos.map((p) => (
-            <li key={p.id} className="border rounded p-2 shadow">
-              <strong>{p.nome}</strong> - R$ {p.preco.toFixed(2)}
-            </li>
-          ))}
-        </ul>
-      )}
+      {produtos.map((produto) => (
+        <div key={produto.id} className="border rounded p-4 mb-4">
+          <h2 className="text-xl font-semibold">{produto.nome}</h2>
+          <p className="text-gray-600">{produto.descricao}</p>
+
+          <button
+            onClick={() => navigate(`/adicionar-variacao/${produto.id}`)}
+            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Adicionar Variação
+          </button>
+
+          <div className="mt-4">
+            <h3 className="font-semibold">Variações:</h3>
+            {produto.variacoes.map((variacao) => (
+              <div key={variacao.id} className="ml-4 mt-2">
+                <p>Preço: R$ {variacao.preco}</p>
+                <ul className="list-disc ml-4">
+                  {variacao.atributos.map((attr) => (
+                    <li key={attr.id}>
+                      {attr.nome}: {attr.valor}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,35 +1,26 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'chave_secreta';
+interface TokenPayload {
+  id: number;
+  iat: number;
+  exp: number;
+}
 
-export const autenticar = (req: Request, res: Response, next: NextFunction) => {
+export function autenticar(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ erro: 'Token não fornecido.' });
+    return res.status(401).json({ mensagem: 'Token não fornecido' });
   }
 
   const [, token] = authHeader.split(' ');
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as { userId: number; role: string };
-
-    req.user = {
-      id: payload.userId,
-      role: payload.role,
-    };
-
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as TokenPayload;
+    req.usuarioId = decoded.id;
     next();
-  } catch {
-    return res.status(401).json({ erro: 'Token inválido.' });
+  } catch (err) {
+    return res.status(401).json({ mensagem: 'Token inválido' });
   }
-};
-
-export const somenteAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user?.role !== 'admin') {
-    return res.status(403).json({ erro: 'Acesso restrito a administradores.' });
-  }
-
-  next();
-};
+}

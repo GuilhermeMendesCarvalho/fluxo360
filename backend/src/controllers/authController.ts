@@ -1,42 +1,35 @@
 import { Request, Response } from 'express';
-import { criarUsuario, buscarUsuarioPorEmail, verificarSenha } from '../services/authService';
-import generateToken from '../utils/generateToken';
-
-export const register = async (req: Request, res: Response) => {
-  const { nome, email, senha } = req.body;
-  if (!nome || !email || !senha) {
-    return res.status(400).json({ error: 'Preencha todos os campos.' });
-  }
-
-  const userExists = await buscarUsuarioPorEmail(email);
-  if (userExists) {
-    return res.status(400).json({ error: 'E-mail já cadastrado.' });
-  }
-
-  const novoUsuario = await criarUsuario(nome, email, senha);
-  const token = generateToken(novoUsuario.id);
-
-  res.status(201).json({
-    usuario: {
-      id: novoUsuario.id,
-      nome: novoUsuario.nome,
-      email: novoUsuario.email
-    },
-    token
-  });
-};
+import { prisma } from '../lib/prisma';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export const login = async (req: Request, res: Response) => {
   const { email, senha } = req.body;
-  if (!email || !senha) {
-    return res.status(400).json({ error: 'Preencha todos os campos.' });
-  }
 
-  const usuario = await buscarUsuarioPorEmail(email);
-  if (!usuario || !(await verificarSenha(senha, usuario.senhaHasheada))) {
-    return res.status(401).json({ error: 'Credenciais inválidas.' });
-  }
+  try {
+    const usuario = await prisma.usuario.findUnique({
+      where: { email }
+    });
 
-  const token = generateToken(usuario.id);
-  res.json({ token });
+    if (!usuario) {
+      return res.status(401).json({ mensagem: 'Credenciais inválidas.' });
+    }
+
+    const senhaValida = await bcrypt.compare(senha, usuario.senhaHasheada);
+
+    if (!senhaValida) {
+      return res.status(401).json({ mensagem: 'Credenciais inválidas.' });
+    }
+
+    const token = jwt.sign(
+      { id: usuario.id },
+      process.env.JWT_SECRET!,
+      { expiresIn: '1h' }
+    );
+
+    res.json({ token, usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email } });
+  } catch (error) {
+    console.error('Erro no login:', error);
+    res.status(500).json({ mensagem: 'Erro interno no servidor.' });
+  }
 };

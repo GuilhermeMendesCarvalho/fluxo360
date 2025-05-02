@@ -1,53 +1,62 @@
-
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 
-const prisma = new PrismaClient();
-
-export const criarProduto = async (req: Request, res: Response) => {
-  const { nome, preco, descricao } = req.body;
-  const usuarioId = req.user?.id;
+export const criarProdutoCompleto = async (req: Request, res: Response) => {
+  const { nome, descricao, variacoes } = req.body;
+  const usuarioId = req.usuarioId;
 
   if (!usuarioId) {
-    return res.status(401).json({ error: 'Usuário não autenticado.' });
-  }
-
-  if (!nome || preco === undefined) {
-    return res.status(400).json({ error: 'Nome e preço são obrigatórios.' });
+    return res.status(401).json({ mensagem: 'Usuário não autenticado.' });
   }
 
   try {
-    const novoProduto = await prisma.produto.create({
+    const produto = await prisma.produto.create({
       data: {
         nome,
         descricao,
-        preco: parseFloat(preco),
         usuarioId,
+        variacoes: {
+          create: variacoes.map((variacao: any) => ({
+            preco: variacao.preco,
+            atributos: {
+              create: variacao.atributos.map((attr: any) => ({
+                nome: attr.nome,
+                valor: attr.valor
+              }))
+            }
+          }))
+        }
       },
-    });
+      include: {
+        variacoes: {
+          include: {
+            atributos: true
+          }
+        }
+      }
+    });    
 
-    return res.status(201).json(novoProduto);
+    res.status(201).json(produto);
   } catch (error) {
-    console.error('Erro ao criar produto:', error);
-    return res.status(500).json({ error: 'Erro interno ao criar produto.' });
+    console.error('Erro ao criar produto completo:', error);
+    res.status(500).json({ mensagem: 'Erro ao criar produto completo.' });
   }
 };
 
 export const listarProdutos = async (req: Request, res: Response) => {
-  const usuarioId = req.user?.id;
-
-  if (!usuarioId) {
-    return res.status(401).json({ error: 'Usuário não autenticado.' });
-  }
-
   try {
     const produtos = await prisma.produto.findMany({
-      where: { usuarioId },
-      orderBy: { id: 'desc' },
+      include: {
+        variacoes: {
+          include: {
+            atributos: true
+          }
+        }
+      }
     });
-    return res.json(produtos);
-  } catch (error) {
-    console.error('Erro ao listar produtos:', error);
-    return res.status(500).json({ error: 'Erro ao listar produtos.' });
+    res.json(produtos);
+  } catch (err) {
+    console.error('Erro ao listar produtos:', err);
+    res.status(500).json({ mensagem: 'Erro ao listar produtos.' });
   }
 };
