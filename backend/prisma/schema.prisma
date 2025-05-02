@@ -19,13 +19,15 @@ model Usuario {
 }
 
 model Produto {
-  id        Int               @id @default(autoincrement())
-  nome      String
-  preco     Float
-  usuarioId Int
-  usuario   Usuario           @relation(fields: [usuarioId], references: [id])
-  variacoes ProdutoVariacao[]
+  id         Int      @id @default(autoincrement())
+  nome       String
+  preco      Float
+  descricao  String?      // agora permitido
+  usuarioId  Int
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  variacoes  ProdutoVariacao[]
 }
+
 
 model ProdutoVariacao {
   id            Int       @id @default(autoincrement())

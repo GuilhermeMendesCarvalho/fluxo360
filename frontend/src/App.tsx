@@ -1,8 +1,10 @@
+
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Usuario from './pages/Usuario';
 import Produto from './pages/Produto';
+import CadastroProduto from './pages/CadastroProduto';
 import Anuncio from './pages/Anuncio';
 import Precificacao from './pages/Precificacao';
 import Estoque from './pages/Estoque';
@@ -15,6 +17,7 @@ export default function App() {
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
         <Route path="usuario" element={<Usuario />} />
         <Route path="produto" element={<Produto />} />
+        <Route path="produto/cadastro" element={<CadastroProduto />} />
         <Route path="anuncio" element={<Anuncio />} />
         <Route path="precificacao" element={<Precificacao />} />
         <Route path="estoque" element={<Estoque />} />
