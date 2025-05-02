@@ -8,18 +8,20 @@ datasource db {
 }
 
 model Usuario {
-  id            Int       @id @default(autoincrement())
-  nome          String
-  email         String    @unique
+  id    Int    @id @default(autoincrement())
+  nome  String
+  email String @unique
   senhaHasheada String
-  createdAt     DateTime  @default(now())
-  produtos      Produto[]
+  role  String
+
+  // Adicione isso abaixo:
+  produtos Produto[] // <- isso é o "lado oposto" da relação
 }
 
 model Produto {
   id        Int               @id @default(autoincrement())
   nome      String
-  descricao String
+  preco     Float
   usuarioId Int
   usuario   Usuario           @relation(fields: [usuarioId], references: [id])
   variacoes ProdutoVariacao[]

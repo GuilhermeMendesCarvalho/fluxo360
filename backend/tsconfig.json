@@ -1,15 +1,13 @@
 {
-    "compilerOptions": {
-      "target": "ES2020",
-      "module": "CommonJS",
-      "moduleResolution": "Node",
-      "outDir": "./dist",
-      "rootDir": "./src",
-      "strict": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "skipLibCheck": true
-    },
-    "include": ["src"]
-  }
-  
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "skipLibCheck": true,         // <- ESSENCIAL PRA IGNORAR ERRO DO #private
+    "esModuleInterop": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "outDir": "dist"
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules"]
+}

@@ -2,7 +2,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 
 type AuthContextType = {
   usuario: any;
-  login: (userData: any) => void;
+  login: (userData: { email: string; senha: string }) => void;
   logout: () => void;
 };
 
@@ -11,7 +11,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [usuario, setUsuario] = useState(null);
 
-  const login = (userData: any) => setUsuario(userData);
+  const login = (userData: { email: string; senha: string }) => {
+    if (
+      userData.email === 'admin@fluxo360.com' &&
+      userData.senha === '123456'
+    ) {
+      setUsuario(userData);
+    } else {
+      alert('Credenciais inválidas');
+    }
+  };
+
   const logout = () => setUsuario(null);
 
   return (
