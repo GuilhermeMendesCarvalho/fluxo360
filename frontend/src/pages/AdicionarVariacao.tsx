@@ -24,8 +24,9 @@ export default function AdicionarVariacao() {
     if (id) {
       api.get("/produtos")
         .then((res) => {
-          const encontrado = res.data.find((p: Produto) => p.id === parseInt(id));
-          setProduto(encontrado);
+          const lista = res.data as Produto[]; // ✅ cast resolvendo o erro
+          const encontrado = lista.find((p) => p.id === parseInt(id));
+          setProduto(encontrado || null);
         })
         .catch((err) => console.error("Erro ao carregar produto:", err));
     }
@@ -60,50 +61,73 @@ export default function AdicionarVariacao() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Adicionar Variação</h2>
+      <h2 className="text-xl font-bold mb-6">Adicionar Variação</h2>
       {produto ? (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            value={produto.nome}
-            disabled
-            className="w-full border rounded p-2 bg-gray-100"
-          />
-          <input
-            type="text"
-            value={produto.descricao}
-            disabled
-            className="w-full border rounded p-2 bg-gray-100"
-          />
-          <input
-            type="number"
-            placeholder="Preço"
-            value={preco}
-            onChange={(e) => setPreco(Number(e.target.value))}
-            className="w-full border rounded p-2"
-          />
-          {atributos.map((attr, idx) => (
-            <div key={idx} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium mb-1">Nome do Produto</label>
+            <input
+              type="text"
+              value={produto.nome}
+              disabled
+              className="w-full border rounded p-2 bg-gray-100"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Descrição</label>
+            <input
+              type="text"
+              value={produto.descricao}
+              disabled
+              className="w-full border rounded p-2 bg-gray-100"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Preço da variação</label>
+            <div className="flex items-center">
+              <span className="mr-2">R$</span>
               <input
-                type="text"
-                placeholder="Nome"
-                value={attr.nome}
-                onChange={(e) => handleChangeAtributo(idx, "nome", e.target.value)}
-                className="w-1/2 border rounded p-2"
-              />
-              <input
-                type="text"
-                placeholder="Valor"
-                value={attr.valor}
-                onChange={(e) => handleChangeAtributo(idx, "valor", e.target.value)}
-                className="w-1/2 border rounded p-2"
+                type="number"
+                placeholder="Preço"
+                value={preco}
+                onChange={(e) => setPreco(Number(e.target.value))}
+                className="w-full border rounded p-2"
               />
             </div>
-          ))}
-          <button type="button" onClick={handleAddAtributo} className="bg-gray-200 rounded px-4 py-2">
-            + Atributo
-          </button>
-          <div className="flex justify-between">
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold mb-2">Atributos da variação</h3>
+            {atributos.map((attr, idx) => (
+              <div key={idx} className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="Nome"
+                  value={attr.nome}
+                  onChange={(e) => handleChangeAtributo(idx, "nome", e.target.value)}
+                  className="w-1/2 border rounded p-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Valor"
+                  value={attr.valor}
+                  onChange={(e) => handleChangeAtributo(idx, "valor", e.target.value)}
+                  className="w-1/2 border rounded p-2"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddAtributo}
+              className="bg-gray-200 rounded px-4 py-2"
+            >
+              + Atributo
+            </button>
+          </div>
+
+          <div className="flex justify-between mt-4">
             <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
               Gravar
             </button>
