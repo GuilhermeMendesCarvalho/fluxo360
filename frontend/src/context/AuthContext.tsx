@@ -1,65 +1,55 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
-type AuthContextType = {
-  usuario: any;
-  token: string | null;
+interface AuthContextType {
+  autenticado: boolean;
   login: (email: string, senha: string) => Promise<boolean>;
   logout: () => void;
-};
+}
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [usuario, setUsuario] = useState(null);
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [autenticado, setAutenticado] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      localStorage.setItem('token', token);
-    }
-  }, [token]);
+    const token = localStorage.getItem("token");
+    if (token) setAutenticado(true);
+  }, []);
 
   const login = async (email: string, senha: string) => {
     try {
-      const res = await fetch('http://localhost:3333/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, senha }),
+      const response = await api.post<{ token: string }>("/auth/login", {
+        email,
+        senha,
       });
+      const token = response.data.token;
 
-      const data = await res.json();
-
-      if (res.ok) {
-        setToken(data.token);
-        setUsuario(data.usuario);
-        localStorage.setItem('token', data.token);
+      if (token) {
+        localStorage.setItem("token", token);
+        setAutenticado(true);
         return true;
       }
-
-      return false;
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      return false;
+      console.error("Erro no login:", error);
     }
+
+    return false;
   };
 
   const logout = () => {
-    setToken(null);
-    setUsuario(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
+    setAutenticado(false);
+    navigate("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ usuario, token, login, logout }}>
+    <AuthContext.Provider value={{ autenticado, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth deve ser usado dentro do AuthProvider');
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

@@ -1,29 +1,47 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function Sidebar() {
-  const [aberto, setAberto] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="relative">
-      <button
-        className="absolute top-4 left-4 z-50 text-xl bg-gray-800 text-white p-2 rounded"
-        onClick={() => setAberto(!aberto)}
+    <>
+      <aside
+        className={`fixed top-0 left-0 h-full bg-slate-800 text-white transition-all duration-300 ${isOpen ? "w-60 p-4" : "w-16 p-2"}`}
       >
-        ☰
-      </button>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="text-white mb-6 focus:outline-none"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
-      {aberto && (
-        <div className="absolute top-0 left-0 w-64 h-screen bg-gray-800 text-white p-6 z-40 shadow-lg">
-          <nav className="flex flex-col gap-4">
-            <Link to="/usuario" onClick={() => setAberto(false)}>Cadastro de Usuário</Link>
-            <Link to="/produto" onClick={() => setAberto(false)}>Produto</Link>
-            <Link to="/anuncio" onClick={() => setAberto(false)}>Anúncio</Link>
-            <Link to="/precificacao" onClick={() => setAberto(false)}>Precificação</Link>
-            <Link to="/estoque" onClick={() => setAberto(false)}>Estoque</Link>
-          </nav>
-        </div>
-      )}
-    </div>
+        {isOpen && (
+          <>
+            <h2 className="text-lg font-bold border-b border-slate-600 pb-2 mb-4">Fluxo360</h2>
+            <nav className="flex flex-col gap-2">
+              <Link to="/usuario" className="hover:bg-slate-700 px-3 py-2 rounded">
+                Cadastro de Usuário
+              </Link>
+              <Link to="/produto" className="hover:bg-slate-700 px-3 py-2 rounded">
+                Produto
+              </Link>
+              <Link to="/anuncio" className="hover:bg-slate-700 px-3 py-2 rounded">
+                Anúncio
+              </Link>
+              <Link to="/precificacao" className="hover:bg-slate-700 px-3 py-2 rounded">
+                Precificação
+              </Link>
+              <Link to="/estoque" className="hover:bg-slate-700 px-3 py-2 rounded">
+                Estoque
+              </Link>
+            </nav>
+          </>
+        )}
+      </aside>
+
+      <div className={`transition-all duration-300 ${isOpen ? "pl-60" : "pl-16"}`} />
+    </>
   );
 }

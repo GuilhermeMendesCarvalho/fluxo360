@@ -1,3 +1,4 @@
+
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -8,21 +9,22 @@ import Anuncio from './pages/Anuncio';
 import Precificacao from './pages/Precificacao';
 import Estoque from './pages/Estoque';
 import AdicionarVariacao from './pages/AdicionarVariacao';
-import ProtectedRoute from './Components/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 
-export default function App() {
+function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
-        <Route path="usuario" element={<Usuario />} />
-        <Route path="produto" element={<Produto />} />
-        <Route path="produto/cadastro" element={<CadastroProduto />} />
-        <Route path="adicionar-variacao/:id" element={<AdicionarVariacao />} />
-        <Route path="anuncio" element={<Anuncio />} />
-        <Route path="precificacao" element={<Precificacao />} />
-        <Route path="estoque" element={<Estoque />} />
-      </Route>
+      <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/usuario" element={<ProtectedRoute><Usuario /></ProtectedRoute>} />
+      <Route path="/produto" element={<ProtectedRoute><Produto /></ProtectedRoute>} />
+      <Route path="/produto/cadastro" element={<ProtectedRoute><CadastroProduto /></ProtectedRoute>} />
+      <Route path="/adicionar-variacao/:id" element={<ProtectedRoute><AdicionarVariacao /></ProtectedRoute>} />
+      <Route path="/anuncio" element={<ProtectedRoute><Anuncio /></ProtectedRoute>} />
+      <Route path="/precificacao" element={<ProtectedRoute><Precificacao /></ProtectedRoute>} />
+      <Route path="/estoque" element={<ProtectedRoute><Estoque /></ProtectedRoute>} />
     </Routes>
   );
 }
+
+export default App;
