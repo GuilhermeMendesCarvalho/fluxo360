@@ -12,10 +12,11 @@ async function main() {
     create: {
       nome: 'Administrador',
       email: 'admin@fluxo360.com',
-      senhaHasheada: senhaHasheada, // nome correto conforme schema.prisma
+      senhaHasheada: await bcrypt.hash('senha123', 10),
       role: 'admin',
     },
-  })
+  });
+  
 
   console.log('Usuário admin criado com sucesso!')
 }

@@ -10,7 +10,7 @@
     "preview": "vite preview",
 
     
-    "reset-db": "cd backend && npx prisma migrate reset --force --skip-seed",
+    "reset-db": "cd backend && npx prisma migrate reset --force && npx ts-node seed.ts",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",

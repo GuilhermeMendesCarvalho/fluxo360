@@ -1,17 +1,17 @@
+
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { ReactNode } from 'react';
 
-type Props = {
-  children: ReactNode;
-};
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
 
-export default function ProtectedRoute({ children }: Props) {
-  const { usuario } = useAuth();
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { token } = useAuth();
 
-  if (!usuario) {
-    return <Navigate to="/login" />;
+  if (!token) {
+    return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 }
