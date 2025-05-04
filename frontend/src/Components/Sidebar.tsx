@@ -1,47 +1,33 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
-    <>
-      <aside
-        className={`fixed top-0 left-0 h-full bg-slate-800 text-white transition-all duration-300 ${isOpen ? "w-60 p-4" : "w-16 p-2"}`}
-      >
+    <div className="min-h-screen w-60 bg-gray-800 text-white flex flex-col p-4">
+      <h1 className="text-xl font-bold mb-6">Fluxo360</h1>
+      <nav className="flex flex-col gap-4">
+        <Link to="/" className="hover:text-yellow-400">Dashboard</Link>
+        <Link to="/produtos" className="hover:text-yellow-400">Produtos</Link>
+        <Link to="/anuncio" className="hover:text-yellow-400">Anúncios</Link>
+        <Link to="/simulador" className="hover:text-yellow-400">Simulador</Link>
+      </nav>
+      <div className="mt-auto">
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-white mb-6 focus:outline-none"
+          onClick={handleLogout}
+          className="w-full mt-6 py-2 bg-red-600 rounded hover:bg-red-700"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          Sair
         </button>
-
-        {isOpen && (
-          <>
-            <h2 className="text-lg font-bold border-b border-slate-600 pb-2 mb-4">Fluxo360</h2>
-            <nav className="flex flex-col gap-2">
-              <Link to="/usuario" className="hover:bg-slate-700 px-3 py-2 rounded">
-                Cadastro de Usuário
-              </Link>
-              <Link to="/produto" className="hover:bg-slate-700 px-3 py-2 rounded">
-                Produto
-              </Link>
-              <Link to="/anuncio" className="hover:bg-slate-700 px-3 py-2 rounded">
-                Anúncio
-              </Link>
-              <Link to="/precificacao" className="hover:bg-slate-700 px-3 py-2 rounded">
-                Precificação
-              </Link>
-              <Link to="/estoque" className="hover:bg-slate-700 px-3 py-2 rounded">
-                Estoque
-              </Link>
-            </nav>
-          </>
-        )}
-      </aside>
-
-      <div className={`transition-all duration-300 ${isOpen ? "pl-60" : "pl-16"}`} />
-    </>
+      </div>
+    </div>
   );
 }

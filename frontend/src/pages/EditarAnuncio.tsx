@@ -19,7 +19,7 @@ export default function EditarAnuncio() {
   useEffect(() => {
     async function carregarDados() {
       try {
-        const { data } = await api.get<typeof form>(`/anuncios/${id}`);
+        const { data } = await api.get(`/anuncios/${id}`);
         setForm(data);
       } catch (error) {
         console.error("Erro ao carregar anúncio:", error);
@@ -105,6 +105,15 @@ export default function EditarAnuncio() {
           Salvar Alterações
         </button>
       </form>
+
+      <button
+        type="button"
+        onClick={() => navigate("/anuncio")}
+        className="mt-4 text-sm text-blue-600 hover:underline"
+      >
+        ← Voltar para Anúncios
+      </button>
+
       {mensagem && <p className="text-center mt-4">{mensagem}</p>}
     </div>
   );

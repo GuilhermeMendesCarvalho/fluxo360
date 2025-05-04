@@ -64,6 +64,15 @@ export default function CadastrarOferta() {
           Cadastrar Oferta
         </button>
       </form>
+
+      <button
+        type="button"
+        onClick={() => navigate("/anuncio")}
+        className="mt-4 text-sm text-blue-600 hover:underline"
+      >
+        ← Voltar para Anúncios
+      </button>
+
       {mensagem && <p className="text-center mt-4">{mensagem}</p>}
     </div>
   );

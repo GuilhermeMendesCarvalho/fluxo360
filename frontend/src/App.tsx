@@ -10,12 +10,14 @@ import Precificacao from './pages/Precificacao';
 import Estoque from './pages/Estoque';
 import AdicionarVariacao from './pages/AdicionarVariacao';
 import ProtectedRoute from './components/ProtectedRoute';
-import EditarOferta from './pages/EditarOferta';
-import SimuladorPreco from './pages/SimuladorPreco';
 
 function App() {
+  const { autenticado } = useAuth();
   return (
-    <Routes>
+    <div className='flex'>
+    {autenticado && <Sidebar />}
+      <div className='flex-1 p-4'>
+        <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/usuario" element={<ProtectedRoute><Usuario /></ProtectedRoute>} />
@@ -28,6 +30,8 @@ function App() {
     <Route path="/oferta/:id/editar" element={<EditarOferta />} />
       <Route path="/simulador" element={<SimuladorPreco />} />
       </Routes>
+      </div>
+    </div>
   );
 }
 
