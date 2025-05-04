@@ -10,6 +10,8 @@ import Precificacao from './pages/Precificacao';
 import Estoque from './pages/Estoque';
 import AdicionarVariacao from './pages/AdicionarVariacao';
 import ProtectedRoute from './components/ProtectedRoute';
+import EditarOferta from './pages/EditarOferta';
+import SimuladorPreco from './pages/SimuladorPreco';
 
 function App() {
   return (
@@ -23,7 +25,9 @@ function App() {
       <Route path="/anuncio" element={<ProtectedRoute><Anuncio /></ProtectedRoute>} />
       <Route path="/precificacao" element={<ProtectedRoute><Precificacao /></ProtectedRoute>} />
       <Route path="/estoque" element={<ProtectedRoute><Estoque /></ProtectedRoute>} />
-    </Routes>
+    <Route path="/oferta/:id/editar" element={<EditarOferta />} />
+      <Route path="/simulador" element={<SimuladorPreco />} />
+      </Routes>
   );
 }
 
