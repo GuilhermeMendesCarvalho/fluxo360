@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -16,7 +17,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) setAutenticado(true);
+    if (token) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      setAutenticado(true);
+    }
   }, []);
 
   const login = async (email: string, senha: string) => {
@@ -29,6 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (token) {
         localStorage.setItem("token", token);
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         setAutenticado(true);
         return true;
       }
@@ -41,6 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    delete api.defaults.headers.common["Authorization"];
     setAutenticado(false);
     navigate("/login");
   };
