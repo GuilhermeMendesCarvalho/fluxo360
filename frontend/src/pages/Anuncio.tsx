@@ -19,7 +19,7 @@ export default function Anuncio() {
   useEffect(() => {
     async function carregar() {
       try {
-        const resposta = await api.get("/anuncios");
+        const resposta = await api.get<Anuncio[]>("/anuncios");
         setAnuncios(resposta.data);
       } catch (error) {
         console.error("Erro ao carregar anúncios:", error);
@@ -44,6 +44,12 @@ export default function Anuncio() {
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               Cadastrar Oferta
+            </button>
+            <button
+              onClick={() => navigate(`/anuncio/${anuncio.id}/editar`)}
+              className="ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+            >
+              Editar
             </button>
           </div>
         ))}
