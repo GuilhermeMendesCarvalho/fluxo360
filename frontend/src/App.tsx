@@ -11,7 +11,8 @@ import Estoque from './pages/Estoque';
 import AdicionarVariacao from './pages/AdicionarVariacao';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
-import { Sidebar } from 'lucide-react';
+import Sidebar from "./components/Sidebar";
+
 import UserMenu from './components/UserMenu';
 import EditarOferta from './pages/EditarOferta';
 import SimuladorPreco from './pages/SimuladorPreco';
@@ -24,18 +25,20 @@ function App() {
       <div className='flex-1 p-4'>
         <UserMenu />
         <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-      <Route path="/usuario" element={<ProtectedRoute><Usuario /></ProtectedRoute>} />
-      <Route path="/produto" element={<ProtectedRoute><Produto /></ProtectedRoute>} />
-      <Route path="/produto/cadastro" element={<ProtectedRoute><CadastroProduto /></ProtectedRoute>} />
-      <Route path="/adicionar-variacao/:id" element={<ProtectedRoute><AdicionarVariacao /></ProtectedRoute>} />
-      <Route path="/anuncio" element={<ProtectedRoute><Anuncio /></ProtectedRoute>} />
-      <Route path="/precificacao" element={<ProtectedRoute><Precificacao /></ProtectedRoute>} />
-      <Route path="/estoque" element={<ProtectedRoute><Estoque /></ProtectedRoute>} />
-    <Route path="/oferta/:id/editar" element={<EditarOferta />} />
-      <Route path="/simulador" element={<SimuladorPreco />} />
-      </Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/usuario" element={<ProtectedRoute><Usuario /></ProtectedRoute>} />
+          <Route path="/produto" element={<ProtectedRoute><Produto /></ProtectedRoute>} />
+          <Route path="/produtos" element={<ProtectedRoute><Produto /></ProtectedRoute>} />
+          <Route path="/produto/cadastro" element={<ProtectedRoute><CadastroProduto /></ProtectedRoute>} />
+          <Route path="/adicionar-variacao/:id" element={<ProtectedRoute><AdicionarVariacao /></ProtectedRoute>} />
+          <Route path="/anuncio" element={<ProtectedRoute><Anuncio /></ProtectedRoute>} />
+          <Route path="/precificacao" element={<ProtectedRoute><Precificacao /></ProtectedRoute>} />
+          <Route path="/estoque" element={<ProtectedRoute><Estoque /></ProtectedRoute>} />
+          <Route path="/oferta/:id/editar" element={<ProtectedRoute><EditarOferta /></ProtectedRoute>} />
+          <Route path="/simulador" element={<ProtectedRoute><SimuladorPreco /></ProtectedRoute>} />
+        </Routes>
+
       </div>
     </div>
   );
