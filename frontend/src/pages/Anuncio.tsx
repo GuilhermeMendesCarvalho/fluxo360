@@ -43,6 +43,15 @@ export default function Anuncio() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Meus Anúncios</h1>
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => navigate("/anuncio/cadastro")}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Novo Anúncio
+        </button>
+      </div>
+    
 
       <form onSubmit={aplicarFiltro} className="flex flex-wrap gap-4 mb-6">
         <input

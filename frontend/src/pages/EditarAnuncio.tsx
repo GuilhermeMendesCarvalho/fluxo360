@@ -108,6 +108,15 @@ export default function EditarAnuncio() {
 
       <button
         type="button"
+        onClick={() => navigate(`/anuncio/${id}/oferta`)}
+        className="mt-4 text-sm text-blue-600 hover:underline"
+      >
+        + Nova Oferta para este Anúncio
+      </button>
+    
+
+      <button
+        type="button"
         onClick={() => navigate("/anuncio")}
         className="mt-4 text-sm text-blue-600 hover:underline"
       >

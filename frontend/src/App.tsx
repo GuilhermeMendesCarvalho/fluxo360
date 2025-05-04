@@ -10,6 +10,10 @@ import Precificacao from './pages/Precificacao';
 import Estoque from './pages/Estoque';
 import AdicionarVariacao from './pages/AdicionarVariacao';
 import ProtectedRoute from './components/ProtectedRoute';
+import { useAuth } from './context/AuthContext';
+import { Sidebar } from 'lucide-react';
+import EditarOferta from './pages/EditarOferta';
+import SimuladorPreco from './pages/SimuladorPreco';
 
 function App() {
   const { autenticado } = useAuth();
