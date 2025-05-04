@@ -14,6 +14,7 @@ import { useAuth } from './context/AuthContext';
 import Sidebar from "./components/Sidebar";
 import CadastroAnuncio from "./pages/CadastroAnuncio";
 import UserMenu from './components/UserMenu';
+import CadastrarOferta from "./pages/CadastrarOferta";
 import EditarOferta from './pages/EditarOferta';
 import SimuladorPreco from './pages/SimuladorPreco';
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/produto/cadastro" element={<ProtectedRoute><CadastroProduto /></ProtectedRoute>} />
           <Route path="/adicionar-variacao/:id" element={<ProtectedRoute><AdicionarVariacao /></ProtectedRoute>} />
           <Route path="/anuncio" element={<ProtectedRoute><Anuncio /></ProtectedRoute>} />
+          <Route path="/anuncio/:id/oferta" element={<ProtectedRoute><CadastrarOferta /></ProtectedRoute>} />
           <Route path="/precificacao" element={<ProtectedRoute><Precificacao /></ProtectedRoute>} />
           <Route path="/estoque" element={<ProtectedRoute><Estoque /></ProtectedRoute>} />
           <Route path="/oferta/:id/editar" element={<ProtectedRoute><EditarOferta /></ProtectedRoute>} />
