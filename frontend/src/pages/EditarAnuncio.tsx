@@ -19,7 +19,8 @@ export default function EditarAnuncio() {
   useEffect(() => {
     async function carregarDados() {
       try {
-        const { data } = await api.get(`/anuncios/${id}`);
+        const { data } = await api.get<typeof form>(`/anuncios/${id}`);
+
         setForm(data);
       } catch (error) {
         console.error("Erro ao carregar anúncio:", error);

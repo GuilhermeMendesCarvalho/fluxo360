@@ -12,6 +12,7 @@ import AdicionarVariacao from './pages/AdicionarVariacao';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
 import { Sidebar } from 'lucide-react';
+import UserMenu from './components/UserMenu';
 import EditarOferta from './pages/EditarOferta';
 import SimuladorPreco from './pages/SimuladorPreco';
 
@@ -21,6 +22,7 @@ function App() {
     <div className='flex'>
     {autenticado && <Sidebar />}
       <div className='flex-1 p-4'>
+        <UserMenu />
         <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
