@@ -1,43 +1,65 @@
-
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 model Usuario {
-  id             Int       @id @default(autoincrement())
-  nome           String
-  email          String    @unique
-  senhaHasheada  String
-  role           String
-  produtos       Produto[]
+  id       Int     @id @default(autoincrement())
+  nome     String
+  email    String  @unique
+  senhaHasheada    String
+  produtos Produto[]
 }
 
 model Produto {
-  id          Int                @id @default(autoincrement())
-  nome        String
-  descricao   String?
-  usuarioId   Int
-  usuario     Usuario            @relation(fields: [usuarioId], references: [id])
-  variacoes   ProdutoVariacao[]
+  id         Int           @id @default(autoincrement())
+  nome       String
+  descricao  String?
+  variacoes  ProdutoVariacao[]
+  usuarioId  Int
+  usuario    Usuario       @relation(fields: [usuarioId], references: [id])
 }
 
 model ProdutoVariacao {
-  id         Int                     @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   preco      Float
+  atributos  Atributo[]
   produtoId  Int
-  produto    Produto                 @relation(fields: [produtoId], references: [id])
-  atributos  AtributoVariacao[]
+  produto    Produto    @relation(fields: [produtoId], references: [id])
 }
 
-model AtributoVariacao {
-  id           Int                @id @default(autoincrement())
-  nome         String
-  valor        String
-  variacaoId   Int
-  variacao     ProdutoVariacao   @relation(fields: [variacaoId], references: [id])
+model Atributo {
+  id               Int               @id @default(autoincrement())
+  nome             String
+  valor            String
+  variacaoId       Int
+  variacao         ProdutoVariacao  @relation(fields: [variacaoId], references: [id])
+}
+
+model Anuncio {
+  id              Int       @id @default(autoincrement())
+  titulo          String
+  plataforma      String
+  status          String
+  tipoFrete       String
+  tipoAnuncio     String
+  ofertas         Oferta[]
+}
+
+model Oferta {
+  id              Int      @id @default(autoincrement())
+  custoProduto    Float
+  taxaComissao    Float    // Ex: 0.15 = 15%
+  frete           Float
+  imposto         Float    // Ex: 0.1 = 10%
+  custoAdicional  Float
+  margem          Float    // Ex: 0.2 = 20%
+  precoVenda      Float
+  status          Boolean  @default(false)
+  anuncioId       Int
+  anuncio         Anuncio  @relation(fields: [anuncioId], references: [id])
 }

@@ -1,18 +1,24 @@
-import express from 'express';
-import cors from 'cors';
-import authRoutes from './routes/authRoutes';
-import produtoRoutes from './routes/produtoRoutes';
+import express from "express";
+import cors from "cors";
+
+import usuarioRoutes from "./routes/usuarioRoutes";
+import produtoRoutes from "./routes/produtoRoutes";
+import variacaoRoutes from "./routes/variacaoRoutes";
+import authRoutes from "./routes/authRoutes";
+import anuncioRoutes from "./routes/anuncioRoutes";
 
 const app = express();
-const PORT = 3333;
 
 app.use(cors());
 app.use(express.json());
 
-// Registro das rotas
-app.use(authRoutes);
-app.use(produtoRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+app.use("/auth", authRoutes);
+app.use("/usuarios", usuarioRoutes);
+app.use("/produtos", produtoRoutes);
+app.use("/variacoes", variacaoRoutes);
+app.use("/anuncios", anuncioRoutes);
+
+app.listen(3333, () => {
+  console.log("🚀 Servidor rodando na porta 3333");
 });

@@ -1,23 +1,27 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import { prisma } from '../lib/prisma';
+import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
-
-/**
- * Cria um novo usuário.
- * Por padrão, o role será 'usuario', a não ser que você queira permitir o envio como parâmetro.
- */
-export const criarUsuario = async (nome: string, email: string, senha: string, role: string = 'usuario') => {
-  const senhaHasheada = await bcrypt.hash(senha, 10);
-  return await prisma.usuario.create({
-    data: { nome, email, senhaHasheada, role }
+export const criarUsuarioAdmin = async () => {
+  const usuarioExistente = await prisma.usuario.findUnique({
+    where: { email: 'admin@fluxo360.com' }
   });
+
+  if (!usuarioExistente) {
+    const senhaHasheada = await bcrypt.hash('senha123', 10);
+
+    await prisma.usuario.create({
+      data: {
+        nome: 'Administrador',
+        email: 'admin@fluxo360.com',
+        senhaHasheada
+      }
+    });
+
+    console.log('Usuário admin criado com sucesso!');
+  } else {
+    console.log('Usuário admin já existe.');
+  }
 };
 
-export const buscarUsuarioPorEmail = async (email: string) => {
-  return await prisma.usuario.findUnique({ where: { email } });
-};
-
-export const verificarSenha = async (senha: string, hash: string) => {
-  return await bcrypt.compare(senha, hash);
-};
+// ⚠️ Chamada da função:
+criarUsuarioAdmin();

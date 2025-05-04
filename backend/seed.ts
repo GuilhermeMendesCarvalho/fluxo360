@@ -1,5 +1,6 @@
+
 import { PrismaClient } from '@prisma/client'
-import * as bcrypt from 'bcrypt' // Import correto sem precisar de esModuleInterop
+import * as bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
@@ -12,11 +13,9 @@ async function main() {
     create: {
       nome: 'Administrador',
       email: 'admin@fluxo360.com',
-      senhaHasheada: await bcrypt.hash('senha123', 10),
-      role: 'admin',
+      senhaHasheada
     },
-  });
-  
+  })
 
   console.log('Usuário admin criado com sucesso!')
 }
