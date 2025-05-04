@@ -13,6 +13,7 @@ model Usuario {
   email    String  @unique
   senhaHasheada    String
   produtos Produto[]
+  anuncios    Anuncio[]
 }
 
 model Produto {
@@ -41,13 +42,15 @@ model Atributo {
 }
 
 model Anuncio {
-  id              Int       @id @default(autoincrement())
-  titulo          String
-  plataforma      String
-  status          String
-  tipoFrete       String
-  tipoAnuncio     String
-  ofertas         Oferta[]
+  id           Int       @id @default(autoincrement())
+  titulo       String
+  plataforma   String
+  status       String
+  tipoFrete    String
+  tipoAnuncio  String
+  usuarioId    Int
+  usuario      Usuario   @relation(fields: [usuarioId], references: [id])
+  ofertas      Oferta[]
 }
 
 model Oferta {
