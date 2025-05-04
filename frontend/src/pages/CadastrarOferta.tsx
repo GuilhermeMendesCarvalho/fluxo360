@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
@@ -38,27 +37,104 @@ export default function CadastrarOferta() {
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded-xl shadow">
       <h1 className="text-xl font-bold mb-4">Cadastrar Oferta</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {[
-          { name: "custoProduto", label: "Custo do Produto" },
-          { name: "taxaComissao", label: "Taxa de Comissão (%)" },
-          { name: "frete", label: "Frete (R$)" },
-          { name: "imposto", label: "Imposto (%)" },
-          { name: "custoAdicional", label: "Custo Adicional" },
-          { name: "margem", label: "Margem (%)" },
-          { name: "precoVenda", label: "Preço de Venda (R$)" }
-        ].map(({ name, label }) => (
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Custo do Produto (R$)</label>
           <input
-            key={name}
             type="number"
             step="0.01"
-            name={name}
-            placeholder={label}
-            value={form[name as keyof typeof form]}
+            name="custoProduto"
+            placeholder="Ex: 45.00"
+            value={form.custoProduto}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required
           />
-        ))}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Taxa de Comissão (%)</label>
+          <input
+            type="number"
+            step="0.01"
+            name="taxaComissao"
+            placeholder="Ex: 16"
+            value={form.taxaComissao}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Frete (R$)</label>
+          <input
+            type="number"
+            step="0.01"
+            name="frete"
+            placeholder="Ex: 12.00"
+            value={form.frete}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Imposto (%)</label>
+          <input
+            type="number"
+            step="0.01"
+            name="imposto"
+            placeholder="Ex: 5"
+            value={form.imposto}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Custo Adicional (R$)</label>
+          <input
+            type="number"
+            step="0.01"
+            name="custoAdicional"
+            placeholder="Ex: 3.50"
+            value={form.custoAdicional}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Margem de Lucro (%)</label>
+          <input
+            type="number"
+            step="0.01"
+            name="margem"
+            placeholder="Ex: 25"
+            value={form.margem}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Preço de Venda (R$)</label>
+          <input
+            type="number"
+            step="0.01"
+            name="precoVenda"
+            placeholder="Ex: 65.00"
+            value={form.precoVenda}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
 
         <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
           Cadastrar Oferta
