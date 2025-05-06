@@ -4,19 +4,20 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite",
+  "dev": "vite --host",
   "build": "tsc -b && vite build",
   "lint": "eslint .",
-  "preview": "vite preview",
+  "preview": "vite preview --host",
 
   "generate": "cd backend && npx prisma generate",
   "studio": "cd backend && npx prisma studio",
   "reset-db": "cd backend && npx prisma migrate reset --force && npx ts-node seed.ts && npx prisma generate",
   "dev:backend": "cd backend && npm run dev",
-  "dev:frontend": "cd frontend && npm run dev",
+  "dev:frontend": "cd frontend && vite --host",
   "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
   "start": "npm run reset-db && start cmd /c \"npm run studio\" && npm run dev:all"
-},
+  },
+
   "dependencies": {
     "@prisma/client": "^6.7.0",
     "react": "^19.0.0",
